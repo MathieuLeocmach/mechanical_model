@@ -1,7 +1,7 @@
 # Mechanical models
 
 A package to deal with mechanical models and their linear
-response in oscillations, creep, microrheology, etc."
+response in oscillations, creep, microrheology, etc.
 
 ## Drawing diagrams in plain text
 

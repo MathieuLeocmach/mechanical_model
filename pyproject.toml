@@ -12,15 +12,14 @@ version = "0.0.1"
 authors = [
   { name="Mathieu Leocmach", email="mathieu.leocmachr@univ-lyon1.fr" },
 ]
-description = "A package to deal with mechanical models and their linear
-response in oscillations, creep, microrheology, etc."
+description = "A package to deal with mechanical models and their linear response in oscillations, creep, microrheology, etc."
 readme = "README.md"
 requires-python = ">=3.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",
 ]
-license = "GPL"
+license = "GPL-3.0-or-later"
 license-files = ["LICEN[CS]E*"]
 
 [project.urls]
