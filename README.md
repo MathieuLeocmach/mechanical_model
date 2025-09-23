@@ -28,7 +28,7 @@ import numpy as np
 from mechanical_model.linear_mech import Maxwell
 from matplotlib import pyplot as plt
 
-omegas = np.logspace(-2,2)
+omega = np.logspace(-2,2)
 fig, axs = plt.subplots(2,1, sharex=True, layout='constrained')
 for m in [Maxwell(G=10, eta=1), Maxwell(G=1, tau=0.3)]:
     line, = axs[0].plot(omega, m.tandelta(omega), label=m)
