@@ -3,6 +3,11 @@
 A package to deal with mechanical models and their linear
 response in oscillations, creep, microrheology, etc.
 
+##Installation
+
+- Clone from github
+- `pip install -e .`
+
 ## Drawing diagrams in plain text
 
 ```python
