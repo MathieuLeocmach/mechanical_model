@@ -4,7 +4,7 @@ from scipy import constants as const
 from scipy.special import gamma
 import mpmath
 
-from diagram import Spring, Dashpot, Springpot
+from .diagram import Spring, Dashpot, Springpot
 
 class LinearMechanicalModel(ABC):
     diagram = """No implemented diagram"""
@@ -58,7 +58,7 @@ class Elastic(LinearMechanicalModel):
         self.G = G
 
     def __str__(self):
-        return f"Elastic G={self.G:e} Pa"
+        return f"Elastic G={self.G:3.2f} Pa"
 
     def Laplace_G(self, s):
         return np.full_like(s, self.G)
@@ -85,7 +85,7 @@ class Newtonian(LinearMechanicalModel):
         self.η = η
 
     def __str__(self):
-        return f"Viscous η={self.η:e} Pa.s"
+        return f"Viscous η={self.η:3.2f} Pa.s"
 
     def Laplace_G(self, s):
         return s * self.η
@@ -127,7 +127,7 @@ class Maxwell(LinearMechanicalModel):
             raise KeyError("Two among G, η or τ must be defined")
 
     def __str__(self):
-        return f"Maxwell G={self.G:e} Pa\tη={self.η:e} Pa.s\tτ={self.τ:e} s"
+        return f"Maxwell G={self.G:3.2f} Pa, η={self.η:3.2f} Pa.s, τ={self.τ:3.2f} s"
 
     def Laplace_G(self, s):
         return s * self.η / (1 + s*self.τ)
@@ -177,7 +177,7 @@ class KelvinVoigt(LinearMechanicalModel):
             raise KeyError("Two among G, η or τ must be defined")
 
     def __str__(self):
-        return f"Kelvin-Voigt G={self.G:e} Pa\tη={self.η:e} Pa.s\tτ={self.τ:e} s"
+        return f"Kelvin-Voigt G={self.G:3.2f} Pa, η={self.η:3.2f} Pa.s, τ={self.τ:3.2f} s"
 
     def Laplace_G(self, s):
         return self.G + s * self.η
@@ -205,7 +205,7 @@ class JohnsonSegalman(Maxwell):
             self.ηs = eta_s
 
     def __str__(self):
-        return f"Johnson-Segalman G={self.G:e} Pa\tη={self.η:e} Pa.s\tηs={self.ηs:e} Pa.s"
+        return f"Johnson-Segalman G={self.G:3.2f} Pa, η={self.η:3.2f} Pa.s, ηs={self.ηs:3.2f} Pa.s"
 
     def Laplace_G(self, s):
         return Maxwell.Laplace_G(self, s) + ω * self.ηs
@@ -229,7 +229,7 @@ class PowerLaw(LinearMechanicalModel):
             self.α = alpha
 
     def __str__(self):
-        return f"power law V={self.V:e} Pa.s^{self.α}"
+        return f"power law V={self.V:3.2f} Pa.s^{self.α:.3f}"
 
     def Laplace_G(self, s):
         return self.V * s ** self.α
@@ -274,7 +274,7 @@ class FractionalMaxwell(LinearMechanicalModel):
             self.τ = (V/G * (np.cos(π*β/2) - np.sin(π*β/2)) / (np.sin(π*α/2) - np.cos(π*α/2)))**(1/(α-β))
 
     def __str__(self):
-        return f"fractional Maxwell V={self.V:e} Pa.s^{self.α}\tG={self.V:e} Pa.s^{self.β}"
+        return f"fractional Maxwell V={self.V:3.2f} Pa.s^{self.α:.3f}, G={self.V:3.2f} Pa.s^{self.β:.3f}"
 
     def Laplace_G(self, s):
         return self.V * self.G * s**(self.α + self.β) /(self.V * s**self.α + self.G * s**self.β)
