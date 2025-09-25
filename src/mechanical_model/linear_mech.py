@@ -6,6 +6,8 @@ import mpmath
 
 from .diagram import Spring, Dashpot, Springpot
 
+π = np.pi
+
 class LinearMechanicalModel(ABC):
     diagram = """No implemented diagram"""
     @abstractmethod
@@ -280,8 +282,8 @@ class FractionalMaxwell(LinearMechanicalModel):
         return self.V * self.G * s**(self.α + self.β) /(self.V * s**self.α + self.G * s**self.β)
 
     def Gp(self, ω):
-        Go = G*ω**β
-        Vo = V*ω**α
+        Go = self.G * ω**self.β
+        Vo = self.V * ω**self.α
         return (
             Go**2 * Vo * np.cos(π * self.α/2) + Vo**2 * Go * np.cos(π * self.β/2)
         )/(
@@ -289,8 +291,8 @@ class FractionalMaxwell(LinearMechanicalModel):
         )
 
     def Gpp(self, ω):
-        Go = G*ω**β
-        Vo = V*ω**α
+        Go = self.G * ω**self.β
+        Vo = self.V * ω**self.α
         return (
             Go**2 * Vo * np.sin(π * self.α/2) + Vo**2 * Go * np.sin(π * self.β/2)
         )/(
@@ -298,8 +300,8 @@ class FractionalMaxwell(LinearMechanicalModel):
         )
 
     def tandelta(self, ω):
-        Go = G*ω**β
-        Vo = V*ω**α
+        Go = self.G * ω**self.β
+        Vo = self.V * ω**self.α
         return (
             Go * np.sin(π * self.α/2) + Vo * np.sin(π * self.β/2)
         )/(
