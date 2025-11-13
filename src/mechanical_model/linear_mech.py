@@ -40,7 +40,7 @@ class LinearMechanicalModel(ABC):
 
     def J(self, t):
         """Creep compilance function of time"""
-        Laplace_J = lambda s: 1/s/self.self.Laplace_G(s)
+        Laplace_J = lambda s: 1/s/self.Laplace_G(s)
         return np.array([
             mpmath.invertlaplace(Laplace_J, x)
             for x in t], float)
