@@ -4,7 +4,7 @@ from scipy import constants as const
 from scipy.special import gamma
 import mpmath
 
-from .diagram import Spring, Dashpot, Springpot
+from .diagram import Spring, Dashpot, Springpot, Inerter
 
 π = np.pi
 
@@ -309,3 +309,17 @@ class FractionalMaxwell(LinearMechanicalModel):
 
     def J(self, t):
         return t**self.α / (self.V*gamma(1+self.α)) + t**self.β/(self.G * gamma(1+self.β))
+
+class WithInertia(LinearMechanicalModel):
+    """Any model in parallel to an inerter."""
+
+    def __init__(self, I, model):
+        self.I = I
+        self.model = model
+        diagram = Inerter() * model.diagram
+
+    def __str__(self):
+        return f'{self.model} in parallel with I={self.I} Pa.s²'
+
+    def Laplace_G(self, s):
+        return self.model.Laplace_G(s) - self.I * s**2

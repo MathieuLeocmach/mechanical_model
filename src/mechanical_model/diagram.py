@@ -77,6 +77,15 @@ ____╱╲____{'_'*(len(V)+len(alpha))}
     ╲╱ {V}, {alpha}
 """)
 
+class Inerter(DiagramLeaf):
+    """An Inerter of moment I."""
+    def __init__(self, I='I'):
+        DiagramLeaf.__init__(self, f"""
+     ___
+____╱ . ╲____{'_'*len(I)}
+    ╲___╱ {I}
+""")
+
 class SeriesDiagram(Diagram):
     """Two or more elements in series"""
     def __init__(self, *args):
