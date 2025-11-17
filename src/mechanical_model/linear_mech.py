@@ -209,7 +209,7 @@ class JohnsonSegalman(Maxwell):
         return f"Johnson-Segalman G={self.G:3.2f} Pa, η={self.η:3.2f} Pa.s, ηs={self.ηs:3.2f} Pa.s"
 
     def Laplace_G(self, s):
-        return Maxwell.Laplace_G(self, s) + ω * self.ηs
+        return Maxwell.Laplace_G(self, s) + s * self.ηs
 
     def Gpp(self, ω):
         return Maxwell.Gpp(self, ω) + ω * self.ηs
