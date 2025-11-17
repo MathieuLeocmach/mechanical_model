@@ -196,26 +196,32 @@ class KelvinVoigt(LinearMechanicalModel):
     def J(self, t):
         return (1 - np.exp(-t/self.τ)) / self.G
 
-class JohnsonSegalman(Maxwell):
+class JohnsonSegalman(LinearMechanicalModel):
     """Johnson-Segalman model of a viscosity ηs (Pa.s) in parallel to a Maxwell of elasticity G (Pa) and viscosity η (Pa.s)."""
 
     diagram = Dashpot('ηs') * Maxwell.diagram
 
     def __init__(self, eta_s, G=None, eta=None, tau=None):
-            Maxwell.__init__(self, G=G, eta=eta, tau=None)
+            self.maxwell = Maxwell(G=G, eta=eta, tau=tau)
+            self.G = self.maxwell.G
+            self.η = self.maxwell.η
+            self.τ = self.maxwell.τ
             self.ηs = eta_s
 
     def __str__(self):
         return f"Johnson-Segalman G={self.G:3.2f} Pa, η={self.η:3.2f} Pa.s, ηs={self.ηs:3.2f} Pa.s"
 
     def Laplace_G(self, s):
-        return Maxwell.Laplace_G(self, s) + s * self.ηs
+        return self.maxwell.Laplace_G(s) + s * self.ηs
+
+    def Gp(self, ω):
+        return self.maxwell.Gp(ω)
 
     def Gpp(self, ω):
-        return Maxwell.Gpp(self, ω) + ω * self.ηs
+        return self.maxwell.Gpp(ω) + ω * self.ηs
 
     def tandelta(self, ω):
-        return Maxwell.tandelta(self, ω) + self.η * ω / Maxwell.Gpp(self, ω)
+        return self.Gpp(ω)/self.Gp(ω)
 
     def J(self, t):
         return t/(self.η + self.ηs) + 1/self.G * (self.η/(self.η + self.ηs))**2 * (1 - np.exp(-self.G * (1/self.η + 1/self.ηs)*t))
