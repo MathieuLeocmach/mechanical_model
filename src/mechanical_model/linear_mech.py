@@ -201,9 +201,8 @@ class JohnsonSegalman(Maxwell):
 
     diagram = Dashpot('ηs') * Maxwell.diagram
 
-    def __init__(self, G, eta, eta_s):
-            self.G = G
-            self.η = eta
+    def __init__(self, eta_s, G=None, eta=None, tau=None):
+            Maxwell.__init__(self, G=G, eta=eta, tau=None)
             self.ηs = eta_s
 
     def __str__(self):
